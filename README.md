@@ -6,5 +6,7 @@ NameA (GitHubUserA), NameB (GitHubUserB)
 ## Project decription
 Max ½ page. Include some information on:
 - what dataset you plan to use
-- goal of the project. 
+- goal of the project.
+
+skin cancer: malignant vs. benign
 https://www.kaggle.com/datasets/fanconic/skin-cancer-malignant-vs-benign/data
