@@ -11,4 +11,16 @@ Max ½ page. Include some information on:
 skin cancer: malignant vs. benign
 https://www.kaggle.com/datasets/fanconic/skin-cancer-malignant-vs-benign/data
 
+breast cncer : malignant vs. benign (based on features of tumor, e.g., size) https://www.kaggle.com/datasets/tolgadincer/labeled-chest-xray-images/data
+
 urinary biomarkeres for pancreatic cancer vs normal vs pancreatitis: https://www.kaggle.com/datasets/johnjdavisiv/urinary-biomarkers-for-pancreatic-cancer/data
+
+melinoma (images of melinoma vs not melinoma) https://www.kaggle.com/datasets/drscarlat/melanoma/data
+
+Parkinsons disease detection (features based on audio recording) https://www.kaggle.com/datasets/debasisdotcom/parkinson-disease-detection/data
+
+eye diseasses classification (images of normal vs. 3 eye diseases) https://www.kaggle.com/datasets/gunavenkatdoddi/eye-diseases-classification
+
+chest x-ray images (narmal vs. pnuemoina) https://www.kaggle.com/datasets/tolgadincer/labeled-chest-xray-images/data
+
+brain tumor classification (images of three types of tumor and normal) https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri/data
