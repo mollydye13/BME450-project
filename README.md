@@ -1,6 +1,6 @@
 # BME450-project
 # Title
-“Moles: Cancer or Not?”
+“Skin Moles Image Classification: Cancer or Not?”
 ## Team members
 Molly Dye (mollydye13), Zoe Egbert (waterpolozo)
 ## Project decription
