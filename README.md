@@ -14,7 +14,7 @@ breast cancer : malignant vs. benign (based on features of tumor, e.g., size) ht
 
 urinary biomarkeres for pancreatic cancer vs normal vs pancreatitis: https://www.kaggle.com/datasets/johnjdavisiv/urinary-biomarkers-for-pancreatic-cancer/data
 
-melinoma (images of melinoma vs not melinoma) https://www.kaggle.com/datasets/drscarlat/melanoma/data
+(eh) melinoma (images of melinoma vs not melinoma) https://www.kaggle.com/datasets/drscarlat/melanoma/data
 
 !!! Parkinsons disease detection (features based on audio recording) https://www.kaggle.com/datasets/debasisdotcom/parkinson-disease-detection/data
 
