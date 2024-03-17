@@ -10,3 +10,5 @@ Max ½ page. Include some information on:
 
 skin cancer: malignant vs. benign
 https://www.kaggle.com/datasets/fanconic/skin-cancer-malignant-vs-benign/data
+
+urinary biomarkeres for pancreatic cancer vs normal vs pancreatitis: https://www.kaggle.com/datasets/johnjdavisiv/urinary-biomarkers-for-pancreatic-cancer/data
