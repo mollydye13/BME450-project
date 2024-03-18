@@ -10,4 +10,6 @@ The goal of our project is to create a neural network that is able to take in an
  
 The data set that will be used for this project consists of a total of 3,297 images of skin moles; 1,800 benign and 1,497 malignant. This data set can be found at: https://www.kaggle.com/datasets/fanconic/skin-cancer-malignant-vs-benign/data 
 
+* its hard to find dermatologists, so this will save people time in determining if they should get a diagnosis. 
+
 
