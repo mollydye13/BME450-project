@@ -14,19 +14,19 @@ from PIL import Image
 
 
 # file destinations Zoe
-folder_benign_train = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/train/benign'
-folder_malignant_train = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/train/malignant'
+#folder_benign_train = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/train/benign'
+#folder_malignant_train = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/train/malignant'
 
-folder_benign_test = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/test/benign'
-folder_malignant_test = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/test/malignant'
+#folder_benign_test = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/test/benign'
+#folder_malignant_test = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/test/malignant'
 
 
 # file destinations Molly
-#folder_benign_train = 'C:\BME 450\mole_cancerorno_1800images\train\benign'
-#folder_malignant_train = 'C:\BME 450\mole_cancerorno_1800images\train\malignant'
+folder_benign_train = 'C:/BME 450/mole_cancerorno_1800images/train/benign'
+folder_malignant_train = 'C:/BME 450/mole_cancerorno_1800images/train/malignant'
 
-#folder_benign_test = 'C:\BME 450\mole_cancerorno_1800images\test\benign'
-#folder_malignant_test = 'C:\BME 450\mole_cancerorno_1800images\test\benign'
+folder_benign_test = 'C:/BME 450/mole_cancerorno_1800images/test/benign'
+folder_malignant_test = 'C:/BME 450/mole_cancerorno_1800images/test/benign'
 
 read = lambda imname: np.asarray(Image.open(imname).convert("RGB"))
 
