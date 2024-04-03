@@ -22,11 +22,11 @@ from torchvision.transforms import ToTensor
 
 import os
 
-plt.clf() # clears any open images from the last run
+print("Done Importing Libraries")
 
 # file destinations Zoe
-folder_train = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/train'
-folder_test = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/test'
+folder_train = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/Small_Data/train'
+folder_test = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/Small_Data/test'
 
 
 # file destinations Molly
@@ -41,6 +41,8 @@ test_data = datasets.ImageFolder(
     root = folder_test,
     transform=ToTensor()
 )
+
+print("Done Defining Data Sets")
 
 # Define the Neural Net
 class Net(nn.Module):
@@ -60,12 +62,19 @@ class Net(nn.Module):
     def forward(self, x):
         x = self.flatten(x)
         x = F.relu(self.l1(x))
+        print("Layer 1 Done")
         x = F.relu(self.l2(x))
+        print("Layer 2 Done")
         x = F.relu(self.l3(x))
+        print("Layer 3 Done")
         x = F.relu(self.l4(x))
+        print("Layer 4 Done")
         x = F.relu(self.l5(x))
+        print("Layer 5 Done")
         x = F.relu(self.l6(x))
+        print("Layer 6 Done")
         x = F.relu(self.l7(x))
+        print("Layer 7 Done, Forward Done")
         output = self.l8(x)
         return output
 
@@ -103,11 +112,17 @@ def test_loop(dataloader, model, loss_fn):
     print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
 #Train the Neural Network
+print("Start Model Initialization")
 
 model = Net()
 
+print("End Model Initialization")
+print("Start Data Loading")
+
 train_dataloader = DataLoader(training_data, batch_size=64)  # batch size: number of training examples before model is updated
 test_dataloader = DataLoader(test_data, batch_size=64)
+
+print("End Data Loading")
 
 learning_rate = 1e-1
 batch_size = 64
@@ -119,6 +134,7 @@ epochs = 100
 for t in range(epochs):
     print(f"Epoch {t+1}\n-------------------------------")
     train_loop(train_dataloader, model, loss_fn, optimizer)
+    print("End Train Loop")
     test_loop(test_dataloader, model, loss_fn)
 print("Done training!")
 
