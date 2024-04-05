@@ -28,6 +28,9 @@ print("Done Importing Libraries")
 folder_train = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/Small_Data/train'
 folder_test = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/Small_Data/test'
 
+# file destination Zoe Purdue Computer
+folder_train = "C:/Users/zegbert/test"
+folder_test = "C:/Users/zegbert/test"
 
 # file destinations Molly
 #folder_train = 'C:/BME 450/mole_cancerorno_1800images/train'
