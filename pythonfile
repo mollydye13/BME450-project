@@ -31,8 +31,8 @@ print("Done Importing Libraries")
 #folder_test = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/Small_Data/test'
 
 # file destination Zoe Purdue Computer
-folder_train = 'C:/Users/zegbert/Documents/Mole_project/Mole_Data_Small/train'
-folder_test = 'C:/Users/zegbert/Documents/Mole_project/Mole_Data_Small/test'
+folder_train = 'C:/Users/zegbert/Documents/Mole_project/Mole_Data_Big/train'
+folder_test = 'C:/Users/zegbert/Documents/Mole_project/Mole_Data_Big/test'
 
 # file destinations Molly
 #folder_train = 'C:/BME 450/mole_cancerorno_reducedsize/train'
@@ -57,38 +57,31 @@ class Net(nn.Module):
         self.flatten = nn.Flatten() #makes the images into vectors (row by row)
         print("end flattening images at", time.time() - start_time)
         print("begin first linear layer at", time.time() - start_time)
-        #self.l1 = nn.Linear(3*224*224, 75000) #images are (224, 224, 3)
-        self.l1 = nn.Linear(3*224*224, 1000)
-        print("end first linear layer at", time.time() - start_time)
-        self.l2 = nn.Linear(1000, 512)
-        self.l3 = nn.Linear(512,2)
-        #self.l2 = nn.Linear(75000, 30000)
-        #self.l3 = nn.Linear(75000, 30000)
-        #self.l4 = nn.Linear(30000, 15000)
-        #self.l5 = nn.Linear(15000, 7500)
-        #self.l6 = nn.Linear(7500, 1000)
-        #self.l7 = nn.Linear(1000, 512)
-        #self.l8 = nn.Linear(512,2)
+        self.l1 = nn.Linear(3*224*224, 7500) #images are (224, 224, 3)
+#        self.l2 = nn.Linear(75000, 30000)
+#        self.l3 = nn.Linear(75000, 30000)
+#        print("begin 4th linear layer at", time.time() - start_time)
+#        self.l4 = nn.Linear(30000, 15000)
+#        self.l5 = nn.Linear(15000, 7500)
+        self.l6 = nn.Linear(7500, 1000)
+        self.l7 = nn.Linear(1000, 512)
+        self.l8 = nn.Linear(512,2)
 
     # goes through neural network
     def forward(self, x):
         x = self.flatten(x)
         x = F.relu(self.l1(x))
-        print("Layer 1 Done")
-        x = F.relu(self.l2(x))
-        print("Layer 2 Done")
-        #x = F.relu(self.l3(x))
-        #print("Layer 3 Done")
-        #x = F.relu(self.l4(x))
-        #print("Layer 4 Done")
-        #x = F.relu(self.l5(x))
-        #print("Layer 5 Done")
-        #x = F.relu(self.l6(x))
-        #print("Layer 6 Done")
-        #x = F.relu(self.l7(x))
-        #print("Layer 7 Done, Forward Done")
-        #output = self.l8(x)
-        output = self.l3(x)
+#        x = F.relu(self.l2(x))
+#        print("Layer 2 Done")
+#        x = F.relu(self.l3(x))
+#        print("Layer 3 Done")
+#        x = F.relu(self.l4(x))
+#        print("Layer 4 Done")
+#        x = F.relu(self.l5(x))
+#        print("Layer 5 Done")
+        x = F.relu(self.l6(x))
+        x = F.relu(self.l7(x))
+        output = self.l8(x)
         return output
 
 
@@ -120,6 +113,8 @@ def test_loop(dataloader, model, loss_fn):
             test_loss += loss_fn(pred, y).item()
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
 
+    print(num_batches)
+    print(size)
     test_loss /= num_batches
     correct /= size
     print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
@@ -134,7 +129,7 @@ train_dataloader = DataLoader(training_data, batch_size=64)  # batch size: numbe
 test_dataloader = DataLoader(test_data, batch_size=64)
 print("Data Loading done at", time.time() - start_time)
 
-learning_rate = 1e-1
+learning_rate = 1e-3
 batch_size = 64
 
 loss_fn = nn.CrossEntropyLoss()
