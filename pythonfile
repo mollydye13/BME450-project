@@ -31,12 +31,12 @@ print("Done Importing Libraries")
 #folder_test = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/Small_Data/test'
 
 # file destination Zoe Purdue Computer
-#folder_train = "C:/Users/zegbert/train"
-#folder_test = "C:/Users/zegbert/test"
+folder_train = 'C:/Users/zegbert/Documents/Mole_project/Mole_Data_Small/train'
+folder_test = 'C:/Users/zegbert/Documents/Mole_project/Mole_Data_Small/test'
 
 # file destinations Molly
-folder_train = 'C:/BME 450/mole_cancerorno_reducedsize/train'
-folder_test = 'C:/BME 450/mole_cancerorno_reducedsize/test'
+#folder_train = 'C:/BME 450/mole_cancerorno_reducedsize/train'
+#folder_test = 'C:/BME 450/mole_cancerorno_reducedsize/test'
 
 training_data = datasets.ImageFolder(
     root = folder_train,  # the folder where all the data is located 
