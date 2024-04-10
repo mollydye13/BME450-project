@@ -129,7 +129,7 @@ train_dataloader = DataLoader(training_data, batch_size=64)  # batch size: numbe
 test_dataloader = DataLoader(test_data, batch_size=64)
 print("Data Loading done at", time.time() - start_time)
 
-learning_rate = 1e-3
+learning_rate = 1e-2
 batch_size = 64
 
 loss_fn = nn.CrossEntropyLoss()
