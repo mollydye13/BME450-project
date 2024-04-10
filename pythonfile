@@ -88,7 +88,7 @@ class Net(nn.Module):
         #x = F.relu(self.l7(x))
         #print("Layer 7 Done, Forward Done")
         #output = self.l8(x)
-        output = self.l3
+        output = self.l3(x)
         return output
 
 
