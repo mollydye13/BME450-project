@@ -126,10 +126,10 @@ print("Model Initialization (Net) done at", time.time() - start_time)
 
 print("Data Loading start at", time.time() - start_time)
 train_dataloader = DataLoader(training_data, shuffle = True, batch_size=64)  # batch size: number of training examples before model is updated
-test_dataloader = DataLoader(test_data, batch_size=64)
+test_dataloader = DataLoader(test_data, shuffle = True, batch_size=64)
 print("Data Loading done at", time.time() - start_time)
 
-learning_rate = 1e-1
+learning_rate = 1e-2
 batch_size = 64
 
 loss_fn = nn.CrossEntropyLoss()
