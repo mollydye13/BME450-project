@@ -61,7 +61,7 @@ class Net(nn.Module):
         self.pool = nn.MaxPool2d(2, 2)
         self.fc1 = nn.Linear(48 * 24 * 24, 120)
         self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, 10)
+        self.fc3 = nn.Linear(84, 2)
 
     # goes through neural network
     def forward(self, x):
@@ -125,7 +125,7 @@ model = Net()
 print("Model Initialization (Net) done at", time.time() - start_time)
 
 print("Data Loading start at", time.time() - start_time)
-train_dataloader = DataLoader(training_data, batch_size=64)  # batch size: number of training examples before model is updated
+train_dataloader = DataLoader(training_data, shuffle = True, batch_size=64)  # batch size: number of training examples before model is updated
 test_dataloader = DataLoader(test_data, batch_size=64)
 print("Data Loading done at", time.time() - start_time)
 
