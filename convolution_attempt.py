@@ -19,6 +19,7 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor
+from torchinfo import summary
 
 import os
 
@@ -53,36 +54,36 @@ print("Done Defining Data Sets at", time.time() - start_time)
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        print("begin flattening images at", time.time() - start_time)
-        self.flatten = nn.Flatten() #makes the images into vectors (row by row)
-        print("end flattening images at", time.time() - start_time)
-        print("begin first linear layer at", time.time() - start_time)
-        self.l1 = nn.Linear(3*224*224, 7500) #images are (224, 224, 3)
-#        self.l2 = nn.Linear(75000, 30000)
-#        self.l3 = nn.Linear(75000, 30000)
-#        print("begin 4th linear layer at", time.time() - start_time)
-#        self.l4 = nn.Linear(30000, 15000)
-#        self.l5 = nn.Linear(15000, 7500)
-        self.l6 = nn.Linear(7500, 1000)
-        self.l7 = nn.Linear(1000, 512)
-        self.l8 = nn.Linear(512,2)
+        self.conv1 = nn.Conv2d(3, 6, 5)
+        self.pool = nn.MaxPool2d(2, 2)
+        self.conv2 = nn.Conv2d(6, 16, 5)
+        self.pool = nn.MaxPool2d(2, 2)
+        self.fc1 = nn.Linear(16 * 53 * 53, 120)
+        self.fc2 = nn.Linear(120, 84)
+        self.fc3 = nn.Linear(84, 10)
 
     # goes through neural network
     def forward(self, x):
-        x = self.flatten(x)
-        x = F.relu(self.l1(x))
-#        x = F.relu(self.l2(x))
-#        print("Layer 2 Done")
-#        x = F.relu(self.l3(x))
-#        print("Layer 3 Done")
-#        x = F.relu(self.l4(x))
-#        print("Layer 4 Done")
-#        x = F.relu(self.l5(x))
-#        print("Layer 5 Done")
-        x = F.relu(self.l6(x))
-        x = F.relu(self.l7(x))
-        output = self.l8(x)
-        return output
+        #print("input:", x.shape)
+        x = self.conv1(x) #[64, 6, 220, 220]
+        #print("after 1st conv:", x.shape)
+        x = self.pool(F.relu(x)) #[64, 6, 110, 110]
+        #print("after 1st pool:", x.shape)
+        x = self.conv2(x) #[64, 16, 106, 106]
+        #print("after conv2:",x.shape)
+        x = self.pool(F.relu(x)) #[64, 16, 53, 53]
+        #print("after pool 2:", x.shape)
+        # x = self.conv3(x)
+        # print(x.shape)
+        # x = self.pool(F.relu(x))
+        # print(x.shape)
+        x = torch.flatten(x, 1) # flatten all dimensions except batch
+        #print(x.shape)
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = self.fc3(x)
+        #print(x.shape)
+        return x
 
 
 def train_loop(dataloader, model, loss_fn, optimizer):
@@ -113,8 +114,6 @@ def test_loop(dataloader, model, loss_fn):
             test_loss += loss_fn(pred, y).item()
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
 
-    print(num_batches)
-    print(size)
     test_loss /= num_batches
     correct /= size
     print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
@@ -129,7 +128,7 @@ train_dataloader = DataLoader(training_data, batch_size=64)  # batch size: numbe
 test_dataloader = DataLoader(test_data, batch_size=64)
 print("Data Loading done at", time.time() - start_time)
 
-learning_rate = 1e-2
+learning_rate = 1e-1
 batch_size = 64
 
 loss_fn = nn.CrossEntropyLoss()
