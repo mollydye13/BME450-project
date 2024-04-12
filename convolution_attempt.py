@@ -19,7 +19,6 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor
-from torchinfo import summary
 
 import os
 
@@ -28,12 +27,12 @@ start_time = time.time()
 print("Done Importing Libraries")
 
 # file destinations Zoe
-#folder_train = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/Small_Data/train'
-#folder_test = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/Small_Data/test'
+folder_train = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/data/train'
+folder_test = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/data/test'
 
 # file destination Zoe Purdue Computer
-folder_train = 'C:/Users/zegbert/Mole_Project/BME450-project/train'
-folder_test = 'C:/Users/zegbert/Mole_Project/BME450-project/test'
+#folder_train = 'C:/Users/zegbert/Mole_Project/BME450-project/train'
+#folder_test = 'C:/Users/zegbert/Mole_Project/BME450-project/test'
 
 # file destinations Molly
 #folder_train = 'C:/BME 450/mole_cancerorno_reducedsize/train'
@@ -58,7 +57,9 @@ class Net(nn.Module):
         self.pool = nn.MaxPool2d(2, 2)
         self.conv2 = nn.Conv2d(6, 16, 5)
         self.pool = nn.MaxPool2d(2, 2)
-        self.fc1 = nn.Linear(16 * 53 * 53, 120)
+        self.conv3 = nn.Conv2d(16, 48, 5)
+        self.pool = nn.MaxPool2d(2, 2)
+        self.fc1 = nn.Linear(48 * 24 * 24, 120)
         self.fc2 = nn.Linear(120, 84)
         self.fc3 = nn.Linear(84, 10)
 
@@ -73,9 +74,9 @@ class Net(nn.Module):
         #print("after conv2:",x.shape)
         x = self.pool(F.relu(x)) #[64, 16, 53, 53]
         #print("after pool 2:", x.shape)
-        # x = self.conv3(x)
-        # print(x.shape)
-        # x = self.pool(F.relu(x))
+        x = self.conv3(x)
+        #print("after conv3:", x.shape)
+        x = self.pool(F.relu(x))
         # print(x.shape)
         x = torch.flatten(x, 1) # flatten all dimensions except batch
         #print(x.shape)
