@@ -139,7 +139,7 @@ train_dataloader = DataLoader(training_data, shuffle = True, batch_size=64)  # b
 test_dataloader = DataLoader(test_data, shuffle = True, batch_size=64)
 print("Data Loading done at", time.time() - start_time)
 
-learning_rate = 1e-2
+learning_rate = 1e-1
 batch_size = 64
 
 loss_fn = nn.CrossEntropyLoss()
@@ -155,7 +155,6 @@ for t in range(epochs):
     train_loop_result = []
     test_loop_result = []
     train_loop_result = train_loop(train_dataloader, model, loss_fn, optimizer)
-    print("trainlopp result", train_loop_result)
     test_loop_result = test_loop(test_dataloader, model, loss_fn)
 
 #save loss and accuracy results in an array
