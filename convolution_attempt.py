@@ -149,7 +149,7 @@ accuracy_train = []
 loss_test = []
 loss_train = []
 print("Epochs start at", time.time() - start_time)
-epochs = 5
+epochs = 30
 for t in range(epochs):
     print(f"Epoch {t+1}\n-------------------------------")
     train_loop_result = []
@@ -161,8 +161,6 @@ for t in range(epochs):
 #save loss and accuracy results in an array
     loss_train.append(train_loop_result[0])
     accuracy_train.append(train_loop_result[1])
-    print("end train loop at", time.time() - start_time)
-    print("Train Accuracy:", accuracy_train)
     loss_test.append(test_loop_result[0])
     accuracy_test.append(test_loop_result[1])
     
