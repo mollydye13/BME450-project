@@ -90,7 +90,7 @@ class Net(nn.Module):
 def train_loop(dataloader, model, loss_fn, optimizer):
     size = len(dataloader.dataset)
     num_correct = 0
-    total_loss = 0
+
     for batch, (X, y) in enumerate(dataloader):
         # Compute prediction and loss
         pred = model(X)
@@ -108,10 +108,10 @@ def train_loop(dataloader, model, loss_fn, optimizer):
         if batch % 100 == 0:
             loss, current = loss.item(), (batch + 1) * len(X)
             print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
-            # Calculate accuracy
-            accuracy = num_correct / size
-        
-    return [loss.item(), accuracy]
+    # Calculate accuracy
+    accuracy = num_correct /size
+
+    return [loss.item(), accuracy*100]
 
 def test_loop(dataloader, model, loss_fn):
     size = len(dataloader.dataset)
@@ -169,21 +169,23 @@ for t in range(epochs):
 print("done with both training loops at", time.time() - start_time)
 # Plotting epoch vs loss
 plt.figure()
-plt.plot(range(1, t+2), loss_train, color = 'pink')
-plt.plot(range(1, t+2), loss_test, color = 'blue')
+plt.plot(range(1, t+2), loss_train, color = 'pink', label= "Training Loss")
+plt.plot(range(1, t+2), loss_test, color = 'blue', label = "Testing Loss")
 plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.title('Epoch vs Loss')
 plt.grid(True)
+plt.legend()
 plt.show()
 # Plotting epoch vs accuracy
 plt.figure()
-plt.plot(range(1, t+2), accuracy_train*100, color = 'pink')
-plt.plot(range(1, t+2), accuracy_test, color = 'blue')
+plt.plot(range(1, t+2), accuracy_train, color = 'pink', label = "Training Accuracy")
+plt.plot(range(1, t+2), accuracy_test, color = 'blue', label = "Testing Accuracy")
 plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
 plt.title('Epoch vs Accuracy')
 plt.grid(True)
+plt.legend()
 plt.show()
 print("begin verification at", time.time() - start_time)
 # Verify Training on One Image
