@@ -27,12 +27,12 @@ start_time = time.time()
 print("Done Importing Libraries")
 
 # file destinations Zoe
-folder_train = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/data/train'
-folder_test = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/data/test'
+#folder_train = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/data/train'
+#folder_test = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/data/test'
 
 # file destination Zoe Purdue Computer
-#folder_train = 'C:/Users/zegbert/Mole_Project/BME450-project/train'
-#folder_test = 'C:/Users/zegbert/Mole_Project/BME450-project/test'
+folder_train = 'C:/Users/zegbert/Mole_Project/BME450-project/train'
+folder_test = 'C:/Users/zegbert/Mole_Project/BME450-project/test'
 
 # file destinations Molly
 #folder_train = 'C:/BME 450/mole_cancerorno_reducedsize/train'
@@ -89,6 +89,8 @@ class Net(nn.Module):
 
 def train_loop(dataloader, model, loss_fn, optimizer):
     size = len(dataloader.dataset)
+    num_correct = 0
+    total_loss = 0
     for batch, (X, y) in enumerate(dataloader):
         # Compute prediction and loss
         pred = model(X)
@@ -99,10 +101,17 @@ def train_loop(dataloader, model, loss_fn, optimizer):
         loss.backward()
         optimizer.step()
 
+        # Compute accuracy
+        _, predicted = torch.max(pred, 1)
+        num_correct += (predicted == y).sum().item()
+
         if batch % 100 == 0:
             loss, current = loss.item(), (batch + 1) * len(X)
             print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
-
+            # Calculate accuracy
+            accuracy = num_correct / size
+        
+    return [loss.item(), accuracy]
 
 def test_loop(dataloader, model, loss_fn):
     size = len(dataloader.dataset)
@@ -118,6 +127,7 @@ def test_loop(dataloader, model, loss_fn):
     test_loss /= num_batches
     correct /= size
     print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
+    return [test_loss, 100*correct]
 
 #Train the Neural Network
 print("Model Initialization (Net) start at", time.time() - start_time)
@@ -134,16 +144,47 @@ batch_size = 64
 
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
-
+accuracy_test = []
+accuracy_train = []
+loss_test = []
+loss_train = []
 print("Epochs start at", time.time() - start_time)
-epochs = 100
+epochs = 5
 for t in range(epochs):
     print(f"Epoch {t+1}\n-------------------------------")
-    train_loop(train_dataloader, model, loss_fn, optimizer)
-    print("end train loop at", time.time() - start_time)
-    test_loop(test_dataloader, model, loss_fn)
-print("done with both training loops at", time.time() - start_time)
+    train_loop_result = []
+    test_loop_result = []
+    train_loop_result = train_loop(train_dataloader, model, loss_fn, optimizer)
+    print("trainlopp result", train_loop_result)
+    test_loop_result = test_loop(test_dataloader, model, loss_fn)
 
+#save loss and accuracy results in an array
+    loss_train.append(train_loop_result[0])
+    accuracy_train.append(train_loop_result[1])
+    print("end train loop at", time.time() - start_time)
+    print("Train Accuracy:", accuracy_train)
+    loss_test.append(test_loop_result[0])
+    accuracy_test.append(test_loop_result[1])
+    
+print("done with both training loops at", time.time() - start_time)
+# Plotting epoch vs loss
+plt.figure()
+plt.plot(range(1, t+2), loss_train, color = 'pink')
+plt.plot(range(1, t+2), loss_test, color = 'blue')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.title('Epoch vs Loss')
+plt.grid(True)
+plt.show()
+# Plotting epoch vs accuracy
+plt.figure()
+plt.plot(range(1, t+2), accuracy_train*100, color = 'pink')
+plt.plot(range(1, t+2), accuracy_test, color = 'blue')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.title('Epoch vs Accuracy')
+plt.grid(True)
+plt.show()
 print("begin verification at", time.time() - start_time)
 # Verify Training on One Image
 categories = ["Benign", "Malignant"]
@@ -164,7 +205,6 @@ print('neural network output, predicted class:', categories[torch.argmax(r).item
 print('Inputs sample - image size:', test_data[sample_num][0].shape)
 print('Label:', test_data[sample_num][1], '\n')
 
-import matplotlib.pyplot as plt
 
 ima = test_data[sample_num][0]
 ima = (ima - ima.mean())/ ima.std()
