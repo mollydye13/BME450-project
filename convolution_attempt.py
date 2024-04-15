@@ -139,7 +139,7 @@ train_dataloader = DataLoader(training_data, shuffle = True, batch_size=64)  # b
 test_dataloader = DataLoader(test_data, shuffle = True, batch_size=64)
 print("Data Loading done at", time.time() - start_time)
 
-learning_rate = 1e-1
+learning_rate = 1e-2
 batch_size = 64
 
 loss_fn = nn.CrossEntropyLoss()
@@ -149,7 +149,7 @@ accuracy_train = []
 loss_test = []
 loss_train = []
 print("Epochs start at", time.time() - start_time)
-epochs = 30
+epochs = 100
 for t in range(epochs):
     print(f"Epoch {t+1}\n-------------------------------")
     train_loop_result = []
