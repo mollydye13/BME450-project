@@ -185,27 +185,39 @@ plt.grid(True)
 plt.legend()
 plt.show()
 print("begin verification at", time.time() - start_time)
-# Verify Training on One Image
-categories = ["Benign", "Malignant"]
-sample_num = 5 # select a specified sample in test_data
-
-#Debugged with CHAT-GPT:
-with torch.no_grad():
-    inputs, labels = test_data[sample_num]
-    inputs = inputs.unsqueeze(0)  # Add batch dimension
-    r = model(inputs)
-print("done debugging with chat gpt at", time.time() - start_time)
-
-print('neural network output pseudo-probabilities:', r)
-print('neural network output class number:', torch.argmax(r).item())
-print('neural network output, predicted class:', categories[torch.argmax(r).item()])
-
-# print(test_data[sample_num])
-print('Inputs sample - image size:', test_data[sample_num][0].shape)
-print('Label:', test_data[sample_num][1], '\n')
 
 
-ima = test_data[sample_num][0]
-ima = (ima - ima.mean())/ ima.std()
-iman = ima.permute(1, 2, 0) # needed to be able to plot
-plt.imshow(iman)
+# Display first 15 images of failed moles
+
+
+def print_fail_loop(dataloader, model):
+    with torch.no_grad():
+        incorrect_images=[]
+        correct_class = []
+        for X, y in dataloader:
+            pred = model(X)
+            _, predicted = torch.max(pred, 1)
+            for i in range(len(predicted)):
+                if predicted[i] != y[i]:
+                    incorrect_images.append(X[i])
+                    correct_class.append(y[i])
+    return incorrect_images, correct_class
+fail_img, correct_class = print_fail_loop(test_dataloader, model)
+
+# Display first 15 images of failed moles
+w=40
+h=30
+fig=plt.figure(figsize=(12, 8))
+columns = 5
+rows = 3
+
+for i in range(1, columns*rows +1):
+    ax = fig.add_subplot(rows, columns, i)
+    image = np.transpose(fail_img[i].numpy(), (1, 2, 0))  # Transpose the dimensions to (height, width, channels)
+    if correct_class[i] == 0:
+        ax.title.set_text('True Benign, \n Classified Malignant')
+    else:
+        ax.title.set_text('True Malignant, \n Classified Benign')
+    plt.imshow(image, interpolation='nearest')
+plt.show()
+
