@@ -115,7 +115,7 @@ def train_loop(dataloader, model, loss_fn, optimizer):
     # train_loss_history.append(epoch_train_loss)
     train_acc = 100 * correct_train / total_train  
     # train_acc_history.append(train_acc)
-    return loss, train_acc
+    return [loss.item(), train_acc]
 
 
 def test_loop(dataloader, model, loss_fn):
@@ -135,7 +135,7 @@ def test_loop(dataloader, model, loss_fn):
     correct /= size
     print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
     test_acc = correct*100
-    return test_loss, test_acc
+    return [test_loss, test_acc]
 
 #Train the Neural Network
 print("Model Initialization (Net) start at", time.time() - start_time)
@@ -154,20 +154,20 @@ loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 print("Epochs start at", time.time() - start_time)
-epochs = 5
+epochs = 20
 train_loss_history = []
 test_loss_history = []
 train_acc_history = []
 test_acc_history = []
 for t in range(epochs):
     print(f"Epoch {t+1}\n-------------------------------")
-    loss, train_acc = train_loop(train_dataloader, model, loss_fn, optimizer)
-    train_loss_history.append(loss)
-    train_acc_history.append(train_acc)
+    train_loop_result = train_loop(train_dataloader, model, loss_fn, optimizer)
+    train_loss_history.append(train_loop_result[0])
+    train_acc_history.append(train_loop_result[1])
     print("end train loop at", time.time() - start_time)
-    test_loss, test_acc = test_loop(test_dataloader, model, loss_fn)
-    test_loss_history.append(test_loss)
-    test_acc_history.append(test_acc)
+    test_loop_result = test_loop(test_dataloader, model, loss_fn)
+    test_loss_history.append(test_loop_result[0])
+    test_acc_history.append(test_loop_result[1])
 print("done with both training loops at", time.time() - start_time)
 
 print("begin verification at", time.time() - start_time)
@@ -198,6 +198,15 @@ plt.plot(epochs_arr, test_loss_history, label='Testing Loss') # fix this so that
 plt.title('Training and Testing Loss')
 plt.xlabel('Epochs')
 plt.ylabel('Loss')
+plt.legend()
+plt.show()
+
+plt.figure(figsize=(10, 5))
+plt.plot(epochs_arr, train_acc_history, label='Training Accuracy')  # fix this so that it appends
+plt.plot(epochs_arr, test_acc_history, label='Testing Accuracy') # fix this so that it appends
+plt.title('Training and Testing Accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
 plt.legend()
 plt.show()
 
