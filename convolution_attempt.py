@@ -204,12 +204,12 @@ def print_fail_loop(dataloader, model):
     return incorrect_images, correct_class
 fail_img, correct_class = print_fail_loop(test_dataloader, model)
 
-# Display first 15 images of failed moles
+# Display first 30 images of failed moles
 w=40
 h=30
 fig=plt.figure(figsize=(12, 8))
 columns = 5
-rows = 3
+rows = 6
 
 for i in range(1, columns*rows +1):
     ax = fig.add_subplot(rows, columns, i)
