@@ -58,7 +58,7 @@ class Net(nn.Module):
         self.pool = nn.MaxPool2d(2, 2)
         self.conv2 = nn.Conv2d(64, 64, 3)
         self.pool = nn.MaxPool2d(2, 2)
-        self.conv3 = nn.Conv2d(16, 512, 3)
+        self.conv3 = nn.Conv2d(64, 512, 3)
         self.pool = nn.MaxPool2d(2, 2)
         self.fc1 = nn.Linear(512 * 26 * 26, 128)
         self.fc2 = nn.Linear(128, 2)
@@ -77,7 +77,7 @@ class Net(nn.Module):
         x = self.conv3(x) #[64, 512, 52, 52]
         #print("after conv3:", x.shape)
         x = self.pool(F.relu(x)) #[64, 512, 26, 26]
-        # print(x.shape)
+        #print(x.shape)
         x = torch.flatten(x, 1) # flatten all dimensions except batch
         #print(x.shape)
         x = F.relu(self.fc1(x))
@@ -150,7 +150,7 @@ loss_train = []
 print("Epochs start at", time.time() - start_time)
 epochs = 100
 for t in range(epochs):
-    print(f"Epoch {t+1}\n-------------------------------")
+    print(f"Epoch {t+1}\nprintEpochs start at", time.time() - start_time,"\n-------------------------------")
     train_loop_result = []
     test_loop_result = []
     train_loop_result = train_loop(train_dataloader, model, loss_fn, optimizer)
