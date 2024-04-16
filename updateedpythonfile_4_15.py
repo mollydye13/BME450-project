@@ -58,19 +58,21 @@ class Net(nn.Module):
         print("end flattening images at", time.time() - start_time)
         print("begin first linear layer at", time.time() - start_time)
         self.l1 = nn.Linear(3*224*224, 7500) #images are (224, 224, 3)
+        self.bn1 = nn.BatchNorm1d(7500)
 #        self.l2 = nn.Linear(75000, 30000)
 #        self.l3 = nn.Linear(75000, 30000)
 #        print("begin 4th linear layer at", time.time() - start_time)
 #        self.l4 = nn.Linear(30000, 15000)
 #        self.l5 = nn.Linear(15000, 7500)
         self.l6 = nn.Linear(7500, 1000)
+        self.bn2 = nn.BatchNorm1d(1000)
         self.l7 = nn.Linear(1000, 512)
         self.l8 = nn.Linear(512,2)
 
     # goes through neural network
     def forward(self, x):
         x = self.flatten(x)
-        x = F.relu(self.l1(x))
+        x = F.relu(self.bn1(self.l1(x)))
 #        x = F.relu(self.l2(x))
 #        print("Layer 2 Done")
 #        x = F.relu(self.l3(x))
@@ -79,7 +81,7 @@ class Net(nn.Module):
 #        print("Layer 4 Done")
 #        x = F.relu(self.l5(x))
 #        print("Layer 5 Done")
-        x = F.relu(self.l6(x))
+        x = F.relu(self.bn2(self.l6(x)))
         x = F.relu(self.l7(x))
         output = self.l8(x)
         return output
@@ -109,7 +111,7 @@ def train_loop(dataloader, model, loss_fn, optimizer):
 
         if batch % 100 == 0:
             loss, current = loss.item(), (batch + 1) * len(X)
-            print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+            print(f"training Accuracy: {(100 * correct_train / total_train):>0.1f}%, loss: {loss:>8f} \n")
             
     epoch_train_loss = running_train_loss / len(dataloader.dataset)   # abverage training loss per sample
     # train_loss_history.append(epoch_train_loss)
