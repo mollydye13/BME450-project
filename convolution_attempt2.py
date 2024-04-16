@@ -56,34 +56,32 @@ class Net(nn.Module):
         self.conv0 = nn.Conv2d(3, 32, 3)
         self.conv1 = nn.Conv2d(32, 64, 3)
         self.pool = nn.MaxPool2d(2, 2)
-        self.conv2 = nn.Conv2d(64, 128, 3)
+        self.conv2 = nn.Conv2d(64, 64, 3)
         self.pool = nn.MaxPool2d(2, 2)
-        self.conv3 = nn.Conv2d(16, 256, 5)
+        self.conv3 = nn.Conv2d(16, 512, 3)
         self.pool = nn.MaxPool2d(2, 2)
-        self.fc1 = nn.Linear(48 * 24 * 24, 120)
-        self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, 2)
+        self.fc1 = nn.Linear(512 * 26 * 26, 128)
+        self.fc2 = nn.Linear(128, 2)
 
     # goes through neural network
     def forward(self, x):
         #print("input:", x.shape)
-        x = self.conv1(x) #[64, 64, 222, 222]
-        #print("after 1st conv:", x.shape)
-        x = self.pool(F.relu(x)) #[64, 64, 111, 111]
+        x = self.conv0(x) #[64, 32, 222, 222]
+        x = self.conv1(x) #[64, 64, 220, 220]
+        x = self.pool(F.relu(x)) #[64, 64, 110, 110]
         #print("after 1st pool:", x.shape)
-        x = self.conv2(x) #[64, 128, 109, 109]
-        #print("after conv2:",x.shape)
-        x = self.pool(F.relu(x)) #[64, 128, , 53]
+        x = self.conv2(x) #[64, 64, 108, 108]
+        #print("Check Shape after conv2:",x.shape)
+        x = self.pool(F.relu(x)) #[64, 64, 54, 54]
         #print("after pool 2:", x.shape)
-        x = self.conv3(x)
+        x = self.conv3(x) #[64, 512, 52, 52]
         #print("after conv3:", x.shape)
-        x = self.pool(F.relu(x))
+        x = self.pool(F.relu(x)) #[64, 512, 26, 26]
         # print(x.shape)
         x = torch.flatten(x, 1) # flatten all dimensions except batch
         #print(x.shape)
         x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
+        x = self.fc2(x)
         #print(x.shape)
         return x
 
