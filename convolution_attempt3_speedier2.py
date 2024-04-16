@@ -62,7 +62,7 @@ class Net(nn.Module):
         self.norm3 = nn.BatchNorm2d(64)
         self.pool = nn.MaxPool2d(2, 2)
         self.conv3 = nn.Conv2d(64, 512, 3)
-        self.norm4 = nn.BatchNorm2d(64)
+        self.norm4 = nn.BatchNorm2d(512)
         self.pool = nn.MaxPool2d(2, 2)
         self.fc1 = nn.Linear(512 * 26 * 26, 128)
         self.fc2 = nn.Linear(128, 2)
