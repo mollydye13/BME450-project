@@ -150,7 +150,7 @@ loss_train = []
 print("Epochs start at", time.time() - start_time)
 epochs = 100
 for t in range(epochs):
-    print(f"Epoch {t+1}\nprintEpochs start at", time.time() - start_time,"\n-------------------------------")
+    print(f"Epoch {t+1}\nstart at", time.time() - start_time,"\n-------------------------------")
     train_loop_result = []
     test_loop_result = []
     train_loop_result = train_loop(train_dataloader, model, loss_fn, optimizer)
