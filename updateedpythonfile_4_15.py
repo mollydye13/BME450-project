@@ -154,7 +154,7 @@ loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 print("Epochs start at", time.time() - start_time)
-epochs = 20
+epochs = 50
 train_loss_history = []
 test_loss_history = []
 train_acc_history = []
@@ -190,6 +190,7 @@ print('neural network output, predicted class:', categories[torch.argmax(r).item
 print('Inputs sample - image size:', test_data[sample_num][0].shape)
 print('Label:', test_data[sample_num][1], '\n')
 
+# graph graphs displaying accuracy and loss over each epoch
 print("!!!!!!!!!!!!!!!!!!!!!print!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 epochs_arr = range(1,epochs +1)
 plt.figure(figsize=(10, 5))
@@ -209,6 +210,42 @@ plt.xlabel('Epochs')
 plt.ylabel('Accuracy')
 plt.legend()
 plt.show()
+
+
+# Display first 15 images of failed moles
+def print_fail_loop(dataloader, model):
+    with torch.no_grad():
+        incorrect_images=[]
+        correct_class = []
+        for X, y in dataloader:
+            pred = model(X)
+            _, predicted = torch.max(pred, 1)
+            for i in range(len(predicted)):
+                if predicted[i] != y[i]:
+                    incorrect_images.append(X[i])
+                    correct_class.append(y[i])
+    return incorrect_images, correct_class
+
+
+# Display first 30 images of failed moles
+fail_img, correct_class = print_fail_loop(test_dataloader, model)
+
+w=40
+h=30
+fig=plt.figure(figsize=(12, 8))
+columns = 5
+rows = 6
+
+for i in range(1, columns*rows +1):
+    ax = fig.add_subplot(rows, columns, i)
+    image = np.transpose(fail_img[i].numpy(), (1, 2, 0))  # Transpose the dimensions to (height, width, channels)
+    if correct_class[i] == 0:
+        ax.title.set_text('True Benign, \n Classified Malignant')
+    else:
+        ax.title.set_text('True Malignant, \n Classified Benign')
+    plt.imshow(image, interpolation='nearest')
+plt.show()
+
 
 ima = test_data[sample_num][0]
 ima = (ima - ima.mean())/ ima.std()
