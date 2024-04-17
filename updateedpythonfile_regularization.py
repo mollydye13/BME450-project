@@ -51,9 +51,6 @@ test_data = datasets.ImageFolder(
 print("Done Defining Data Sets at", time.time() - start_time)
 
 class MLP(nn.Module):
-    '''
-    Multilayer Perceptron.
-    '''
 # Define the Neural Net
 # class Net(nn.Module):
     def __init__(self):
@@ -182,7 +179,7 @@ loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 print("Epochs start at", time.time() - start_time)
-epochs = 2
+epochs = 1
 train_loss_history = []
 test_loss_history = []
 train_acc_history = []
@@ -227,15 +224,15 @@ categories = ["Benign", "Malignant"]
 sample_num = 5 # select a specified sample in test_data
 
 #Debugged with CHAT-GPT:
-with torch.no_grad():
-    inputs, labels = test_data[sample_num]
-    inputs = inputs.unsqueeze(0)  # Add batch dimension
-    r = model(inputs)
-print("done debugging with chat gpt at", time.time() - start_time)
+# with torch.no_grad():
+#    inputs, labels = test_data[sample_num]
+#    inputs = inputs.unsqueeze(0)  # Add batch dimension
+#    r = model(inputs)
+#print("done debugging with chat gpt at", time.time() - start_time)
 
-print('neural network output pseudo-probabilities:', r)
-print('neural network output class number:', torch.argmax(r).item())
-print('neural network output, predicted class:', categories[torch.argmax(r).item()])
+#print('neural network output pseudo-probabilities:', r)
+#print('neural network output class number:', torch.argmax(r).item())
+#print('neural network output, predicted class:', categories[torch.argmax(r).item()])
 
 # print(test_data[sample_num])
 print('Inputs sample - image size:', test_data[sample_num][0].shape)
@@ -249,10 +246,10 @@ def print_fail_loop(dataloader, model):
         incorrect_images=[]
         correct_class = []  # 0 if true benign, classified malignant; 1 if truely malignant but classified benign
         for X, y in dataloader:
-            a += 1
             pred = model(X)
             _, predicted = torch.max(pred, 1)
             for i in range(len(predicted)):
+                a += 1
                 if predicted[i] != y[i]:
                     incorrect_images.append(X[i])
                     correct_class.append(y[i])
@@ -284,10 +281,10 @@ for i in range(1, columns*rows +1):
 plt.show()
 
 # print stats about false positives and negatives
-print('total number of images:    ', num_images)
-print('incorrect classifications: ', len(correct_class), '%: ', (len(correct_class)/ num_images))
-print('false positives:           ', false_pos, '%: ', (false_pos/ len(correct_class)))
-print('false negatives:           ', false_neg, '%: ', (false_neg/ len(correct_class)))
+print('total number of images: ', num_images)
+print('number incorrect:       ', len(correct_class), '%: ', (len(correct_class)/ num_images))
+print('false positives:        ', false_pos, 'or ', ((false_pos/ len(correct_class))*100), '%')
+print('false negatives:        ', false_neg, 'or ', ((false_neg/ len(correct_class))*100), '%')
 
 
 ima = test_data[sample_num][0]
