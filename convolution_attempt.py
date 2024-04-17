@@ -54,10 +54,13 @@ class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(3, 6, 5)
+        self.norm1 = nn.BatchNorm2d(6)
         self.pool = nn.MaxPool2d(2, 2)
         self.conv2 = nn.Conv2d(6, 16, 5)
+        self.norm2 = nn.BatchNorm2d(16)
         self.pool = nn.MaxPool2d(2, 2)
         self.conv3 = nn.Conv2d(16, 48, 5)
+        self.norm3 = nn.BatchNorm2d(48)
         self.pool = nn.MaxPool2d(2, 2)
         self.fc1 = nn.Linear(48 * 24 * 24, 120)
         self.fc2 = nn.Linear(120, 84)
@@ -67,14 +70,17 @@ class Net(nn.Module):
     def forward(self, x):
         #print("input:", x.shape)
         x = self.conv1(x) #[64, 6, 220, 220]
+        x = self.norm1(x)
         #print("after 1st conv:", x.shape)
         x = self.pool(F.relu(x)) #[64, 6, 110, 110]
         #print("after 1st pool:", x.shape)
         x = self.conv2(x) #[64, 16, 106, 106]
+        x = self.norm2(x)
         #print("after conv2:",x.shape)
         x = self.pool(F.relu(x)) #[64, 16, 53, 53]
         #print("after pool 2:", x.shape)
         x = self.conv3(x)
+        x = self.norm3(x)
         #print("after conv3:", x.shape)
         x = self.pool(F.relu(x))
         # print(x.shape)
