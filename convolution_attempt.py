@@ -31,7 +31,7 @@ print("Done Importing Libraries")
 #folder_test = 'C:/Users/zoeol/OneDrive/Documents/Spring 2024/BME 450 Deep Learning/Mole Cancer or Not_Project/data/test'
 
 # file destination Zoe Purdue Computer
-folder_train = 'C:/Users/zegbert/Mole_Project/BME450-project/train'
+folder_train = 'C:/Users/zegbert/Mole_Project/train'
 folder_test = 'C:/Users/zegbert/Mole_Project/BME450-project/test'
 
 # file destinations Molly
@@ -146,7 +146,7 @@ test_dataloader = DataLoader(test_data, shuffle = True, batch_size=64)
 print("Data Loading done at", time.time() - start_time)
 
 learning_rate = 1e-2
-batch_size = 64
+batch_size = 128
 
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
@@ -155,7 +155,7 @@ accuracy_train = []
 loss_test = []
 loss_train = []
 print("Epochs start at", time.time() - start_time)
-epochs = 100
+epochs = 70
 for t in range(epochs):
     print(f"Epoch {t+1}\nstart at", time.time() - start_time,"\n-------------------------------")
     train_loop_result = []
@@ -219,11 +219,12 @@ rows = 6
 
 for i in range(1, columns*rows +1):
     ax = fig.add_subplot(rows, columns, i)
-    image = np.transpose(fail_img[i].numpy(), (1, 2, 0))  # Transpose the dimensions to (height, width, channels)
-    if correct_class[i] == 0:
-        ax.title.set_text('True Benign, \n Classified Malignant')
-    else:
-        ax.title.set_text('True Malignant, \n Classified Benign')
+    if i < len(fail_img):
+        image = np.transpose(fail_img[i].numpy(), (1, 2, 0))  # Transpose the dimensions to (height, width, channels)
+        if correct_class[i] == 0:
+            ax.title.set_text('True Benign, \n Classified Malignant')
+        else:
+            ax.title.set_text('True Malignant, \n Classified Benign')
     plt.imshow(image, interpolation='nearest')
 plt.show()
 
