@@ -62,7 +62,7 @@ class Net(nn.Module):
         self.conv3 = nn.Conv2d(16, 48, 5)
         self.norm3 = nn.BatchNorm2d(48)
         self.pool = nn.MaxPool2d(2, 2)
-        self.fc1 = nn.Linear(48 * 24 * 24, 120)
+        self.fc1 = nn.Linear(48 * 24 * 24, 120) # w/ 3x3 filter: 48 * 26 * 26 w/ 5x5 filter: 48 * 24 * 24
         self.fc2 = nn.Linear(120, 84)
         self.fc3 = nn.Linear(84, 2)
 
@@ -77,13 +77,13 @@ class Net(nn.Module):
         x = self.conv2(x) #[64, 16, 106, 106]
         x = self.norm2(x)
         #print("after conv2:",x.shape)
-        x = self.pool(F.relu(x)) #[64, 16, 53, 53]
+        x = self.pool(F.relu(x)) # w/ 5x5 filter: [64, 16, 53, 53] w/ 3x3 filter: [64, 16, 54, 54]
         #print("after pool 2:", x.shape)
         x = self.conv3(x)
         x = self.norm3(x)
-        #print("after conv3:", x.shape)
+        #print("after conv3:", x.shape) # w/ 3x3 filter [64, 48, 52, 52]
         x = self.pool(F.relu(x))
-        # print(x.shape)
+        #print(x.shape)
         x = torch.flatten(x, 1) # flatten all dimensions except batch
         #print(x.shape)
         x = F.relu(self.fc1(x))
@@ -193,7 +193,7 @@ plt.show()
 print("begin verification at", time.time() - start_time)
 
 
-# Display first 15 images of failed moles
+# Display images of failed moles
 
 
 def print_fail_loop(dataloader, model):
